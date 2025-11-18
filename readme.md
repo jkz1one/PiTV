@@ -2,7 +2,7 @@
 
 **A minimal, Wayland-based kiosk system for Raspberry Pi OS.**
 
-PiTV is a small, reliable setup that turns a Raspberry Pi into a clean, remote-friendly TV interface. Everything is built around stability: a fullscreen dashboard, a frameless Firefox ESR profile, and predictable location behavior for streaming apps. The system stays simple, uses only a handful of config files, and avoids fragile kiosk flags entirely.
+PiTV is a small, reliable setup that turns a Raspberry Pi into a clean, remote-friendly TV interface. Everything is built around stability. With a fullscreen dashboard, a frameless Firefox ESR profile, and predictable location behavior for streaming apps. The system stays simple, uses only a handful of config files, and avoids fragile kiosk flags entirely.
 
 Key Capabilities:
 
@@ -22,64 +22,6 @@ Key Capabilities:
 * Basic keyboard for initial setup
 * Internet 
 
----
-
-# 📦 Installation Summary
-
-Here you go — a **clean, professional, repo-ready README** for your **PiTV** GitHub project.
-It explains *why* each subsystem exists and *how* the whole kiosk works.
-Everything matches your **Current Verified Build (Wayland / rpd-labwc)** exactly.
-
----
-
-# 🧩 PiTV
-
-### Raspberry Pi TV Dashboard • Static Geolocation • Touch Keyboard • Firefox ESR Kiosk
-
-**Verified Build:** Raspberry Pi OS Bookworm • Wayland (`rpd-labwc`) • Firefox ESR
-
-PiTV is a reproducible, minimal, and completely self-contained home-media dashboard for Raspberry Pi.
-It uses **Firefox ESR**, **GeoClue static geolocation**, and an **auto-pop Onboard keyboard** to provide a smooth TV-friendly experience for streaming sites like Hulu, Netflix, and Max.
-
-This README documents the full setup, the *why*, and the system architecture.
-
----
-
-## ⭐ Features
-
-* **Static geolocation override** via **GeoClue → XDG portals → Firefox ESR**
-  Required because modern streaming services verify *location via browser APIs*, not IP only.
-
-* **Wayland (rpd-labwc)** session for cleaner rendering and working Onboard keyboard overlays.
-
-* **Onboard touch keyboard** that pops up automatically on any text input and hides afterwards.
-
-* **Fullscreen HTML dashboard** with arrow-key navigation and a Reload button.
-
-* **Frameless Firefox window** (no tabs, bars, or chrome) without using `--kiosk`
-  → avoids breaking Onboard’s floating layer on Wayland.
-
-* **Systemd user service** boots Firefox into the dashboard automatically on login.
-
-* **No Chromium** (Chrome/Chromium cannot reliably use GeoClue static locations on Raspberry Pi OS).
-
----
-
-# 0. Core Architecture
-
-**PiTV runs on:**
-
-* **Raspberry Pi OS (Bookworm)**
-* **Wayland session:** `wayland / rpd-labwc`
-* **Firefox ESR** (required for proper GeoClue integration via portals)
-* **GeoClue static location file** for deterministic geolocation
-
-This combination ensures:
-
-* Streaming services see *NYC* (or whatever you choose) as your location
-* Keyboard reliably overlays the browser window
-* Dashboard loads instantly on boot
-* System is simple and fully reproducible
 
 ---
 
@@ -287,15 +229,6 @@ Place your dashboard:
 ```
 /home/pitv/dashboard/index.html
 ```
-
-Dashboard requirements:
-
-* Dark minimal UI
-* Arrow-key navigation
-* Reload button
-* Works with touch and remote inputs
-* No scrollbars or overscroll
-* Loads instantly (static file → no server)
 
 ---
 
