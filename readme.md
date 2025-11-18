@@ -1,18 +1,12 @@
-# 📺 PiTV — Raspberry Pi TV Dashboard Kiosk
+# 📺 PiTV — Raspberry Pi TV Dashboard
 
-**A minimal, Wayland-based kiosk system built on Raspberry Pi OS (Bookworm).**
+**A minimal, Wayland-based kiosk system.**
 
-PiTV delivers a clean, reliable, living-room-ready experience on Raspberry Pi OS.
-
-Turn a raspberry pi into a **full-screen TV dashboard** using Firefox ESR, a custom HTML UI, and on-screen keyboard support.
-It uses **GeoClue + XDG portals** for static-location spoofing (Hulu / Netflix geo checks), auto-launches Firefox in a frameless profile, and provides a clean, touch-friendly interface.
-
----
-
+PiTV delivers a clean, reliable, living-room-ready experience on Raspberry Pi OS (BookWorm).
 
 Key Capabilities:
 
-Boots directly into a fullscreen, remote-friendly dashboard
+* Boots directly into a fullscreen, remote-friendly dashboard
 * Frameless Firefox ESR profile optimized for TV display
 * On-screen keyboard that auto-shows on text fields and stays above apps
 * Stable static-location behavior via GeoClue + XDG portals
