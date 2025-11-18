@@ -1,18 +1,17 @@
-# 📺 PiTV — Raspberry Pi TV Dashboard
+# 📺 **PiTV — Raspberry Pi TV Dashboard**
 
-**A minimal, Wayland-based kiosk system.**
+## **A minimal, Wayland-based kiosk system for Raspberry Pi OS.**
 
-PiTV delivers a clean, reliable, living room ready experience on Raspberry Pi OS (BookWorm).
+PiTV is a small, reliable setup that turns a Raspberry Pi into a clean, remote-friendly TV interface. Everything is built around stability: a fullscreen dashboard, a frameless Firefox ESR profile, and predictable location behavior for streaming apps. The system stays simple, uses only a handful of config files, and avoids fragile kiosk flags entirely.
 
 Key Capabilities:
 
-* Boots directly into a fullscreen, remote-friendly dashboard
-* Frameless Firefox ESR profile optimized for TV display
-* On-screen keyboard that auto-shows on text fields and stays above apps
-* Stable static-location behavior via GeoClue + XDG portals
-* Fully Wayland-native (rpd-labwc), no Chromium, no fragile kiosk flags
-* Reproducible setup using isolated config files and a systemd user service
-
+* Boots straight into a fullscreen dashboard designed for remotes and arrow-key input
+* Uses a custom Firefox ESR profile with all browser chrome hidden for a TV-friendly look
+* Provides an on-screen keyboard that pops up automatically on text inputs
+* Reports a consistent geolocation through GeoClue + XDG portals (needed for streaming services)
+* Runs fully on Wayland (rpd-labwc) for better window layering and keyboard behavior
+* All configuration is isolated and reproducible using systemd, local profiles, and small config files
 ---
 
 # 🛠️ Requirements
@@ -39,7 +38,7 @@ echo "$XDG_SESSION_TYPE / $DESKTOP_SESSION"
 # → wayland / rpd-labwc
 ```
 
-If audio or Wi-Fi misbehave, fix them in sudo raspi-config.
+**If audio or Wi-Fi misbehave, fix them in sudo raspi-config.**
 
 Install packages
 
@@ -58,14 +57,15 @@ Create /etc/geolocation with fixed coordinates and lock its permissions:
 
 ```
 sudo tee /etc/geolocation >/dev/null <<'EOF'
-40.7580
--73.9855
+40.7585
+-73.9852
 10
 1000
 EOF
 sudo chown geoclue /etc/geolocation
 sudo chmod 600 /etc/geolocation
 ```
+*(You can replace these with any location you want — the values here are just a demo.)*
 
 Allow only the static source and whitelist Firefox ESR for the current UID:
 
