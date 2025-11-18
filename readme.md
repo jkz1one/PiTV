@@ -2,6 +2,8 @@
 
 **A minimal, Wayland-based kiosk system built on Raspberry Pi OS (Bookworm).**
 
+PiTV delivers a clean, reliable, living-room-ready experience on Raspberry Pi OS.
+
 PiTV turns a standard Raspberry Pi into a **full-screen TV dashboard** using Firefox ESR, a custom HTML UI, and on-screen keyboard support.
 It uses **GeoClue + XDG portals** for static-location spoofing (Hulu / Netflix geo checks), auto-launches Firefox in a frameless profile, and provides a clean, touch-friendly interface.
 
@@ -9,25 +11,15 @@ This repo contains everything required to **rebuild PiTV from scratch**.
 
 ---
 
-🚀 Features
 
-PiTV delivers a clean, reliable, living-room-ready kiosk experience on Raspberry Pi OS.
-It boots straight into a fullscreen dashboard, launches Firefox ESR in a frameless profile, supports a modern on-screen keyboard, and provides consistent location handling for apps that rely on geolocation.
-
-Key Capabilities
+Key Capabilities:
 
 Boots directly into a fullscreen, remote-friendly dashboard
-
-Frameless Firefox ESR profile optimized for TV display
-
-On-screen keyboard that auto-shows on text fields and stays above apps
-
-Stable static-location behavior via GeoClue + XDG portals
-
-Fully Wayland-native (rpd-labwc), no Chromium, no fragile kiosk flags
-
-Reproducible setup using isolated config files and a systemd user service
-
+* Frameless Firefox ESR profile optimized for TV display
+* On-screen keyboard that auto-shows on text fields and stays above apps
+* Stable static-location behavior via GeoClue + XDG portals
+* Fully Wayland-native (rpd-labwc), no Chromium, no fragile kiosk flags
+* Reproducible setup using isolated config files and a systemd user service
 
 ---
 
@@ -100,11 +92,11 @@ Reboot — PiTV launches automatically.
 
 ---
 
-# 🧩 Optional Extras (QoL)
+#  Optional Extras (QoL)
 
 These tweaks aren’t part of the core build but can improve the experience.
 
-### 🔻 Top Bar Tweaks (Panel Size / Autohide)
+###  Top Bar Tweaks (Panel Size / Autohide)
 
 You can adjust the Wayland top panel by editing config in `~/.config/lxpanel/...`:
 
@@ -114,7 +106,7 @@ You can adjust the Wayland top panel by editing config in `~/.config/lxpanel/...
 
 These work but can behave inconsistently across Raspberry Pi OS updates, so PiTV leaves the panel untouched by default.
 
-### 🎮 Remote Control Support
+###  Remote Control Support
 
 PiTV supports any device that sends arrow keys + Enter.
 Common options:
@@ -127,7 +119,7 @@ The dashboard UI is already optimized for arrow-key navigation.
 
 ---
 
-# 🎨 Editing the Dashboard Tiles
+#  Editing the Dashboard Tiles
 
 All tiles on the PiTV home screen are defined in:
 
@@ -148,20 +140,6 @@ Each tile is a simple block:
   </div>
 </button>
 ```
-
-### ➕ Add a Tile
-
-Copy/paste an existing tile and edit:
-
-* `data-url` (where it goes)
-* `data-bg` (image)
-* `.tile-label` (title)
-* `.tile-sub` (subtitle)
-
-### 🖼 Change Backgrounds
-
-Swap the link inside `data-bg`.
-
 
 ---
 
@@ -196,7 +174,7 @@ pitv/
 
 ---
 
-# 🧪 Verification Checklist
+#  Verification Checklist
 
 | Component     | Expect                | Command                                       |
 | ------------- | --------------------- | --------------------------------------------- |
