@@ -1,6 +1,6 @@
 # 📺 **PiTV — Raspberry Pi TV Dashboard**
 
-## **A minimal, Wayland-based kiosk system for Raspberry Pi OS.**
+**A minimal, Wayland-based kiosk system for Raspberry Pi OS.**
 
 PiTV is a small, reliable setup that turns a Raspberry Pi into a clean, remote-friendly TV interface. Everything is built around stability: a fullscreen dashboard, a frameless Firefox ESR profile, and predictable location behavior for streaming apps. The system stays simple, uses only a handful of config files, and avoids fragile kiosk flags entirely.
 
