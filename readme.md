@@ -11,7 +11,7 @@ This repo contains everything required to **rebuild PiTV from scratch**.
 
 # 🚀 Features
 
-### 🔒 Static Geolocation (NYC)
+### 🔒 Static Geolocation
 
 * GeoClue configured with a locked `/etc/geolocation`
 * XDG portals enabled for Firefox location requests
@@ -36,13 +36,7 @@ This repo contains everything required to **rebuild PiTV from scratch**.
 * Runs on Raspberry Pi OS Bookworm’s **rpd-labwc** session
 * No LXDE/Openbox dependencies
 * No Chromium
-
-### ⚡ Reproducible + Minimal
-
-* All config isolated into clean, safe files
-* No fragile hacks
-* Easy to rebuild, reset, or fork
-
+* 
 ---
 
 # 🛠️ Requirements
@@ -51,7 +45,7 @@ This repo contains everything required to **rebuild PiTV from scratch**.
 * Raspberry Pi OS Bookworm (64-bit, Desktop)
 * Wayland session: `wayland / rpd-labwc`
 * Basic keyboard for initial setup
-* Network for Hulu/Netflix tests
+* Internet 
 
 ---
 
