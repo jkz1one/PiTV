@@ -378,7 +378,8 @@ Each tile is a simple block:
 
 ```
 pitv/
-├── README.md
+├── readme.md
+├── setup.md
 ├── dashboard/
 │   └── index.html
 │
@@ -394,13 +395,8 @@ pitv/
 │   ├── onboard-settings.sh
 │   └── onboard.desktop
 │
-├── systemd/
-│   └── pitv-kiosk.service
-│
-└── screenshots/
-    ├── dashboard.jpg
-    ├── geoclue.jpg
-    └── kiosk.jpg
+└──systemd/
+    └── pitv-kiosk.service
 ```
 
 ---
