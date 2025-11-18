@@ -4,10 +4,8 @@
 
 PiTV delivers a clean, reliable, living-room-ready experience on Raspberry Pi OS.
 
-PiTV turns a standard Raspberry Pi into a **full-screen TV dashboard** using Firefox ESR, a custom HTML UI, and on-screen keyboard support.
+Turn a raspberry pi into a **full-screen TV dashboard** using Firefox ESR, a custom HTML UI, and on-screen keyboard support.
 It uses **GeoClue + XDG portals** for static-location spoofing (Hulu / Netflix geo checks), auto-launches Firefox in a frameless profile, and provides a clean, touch-friendly interface.
-
-This repo contains everything required to **rebuild PiTV from scratch**.
 
 ---
 
