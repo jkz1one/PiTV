@@ -1,0 +1,14 @@
+[Unit]
+Description=PiTV Firefox Dashboard
+After=graphical-session.target
+
+[Service]
+Type=simple
+Environment=MOZ_ENABLE_WAYLAND=1
+Environment=GTK_USE_PORTAL=1
+ExecStart=/usr/bin/firefox-esr -profile %h/.mozilla/firefox/kiosk-profile --new-window file:///home/pitv/dashboard/index.html
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
