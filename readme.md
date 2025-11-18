@@ -2,7 +2,7 @@
 
 **A minimal, Wayland-based kiosk system.**
 
-PiTV delivers a clean, reliable, living-room-ready experience on Raspberry Pi OS (BookWorm).
+PiTV delivers a clean, reliable, living room ready experience on Raspberry Pi OS (BookWorm).
 
 Key Capabilities:
 
