@@ -155,11 +155,14 @@ Create /home/pitv/dashboard/index.html
 <style>
   :root {
     --bg: #050509;
-    --card: #15151b;
-    --border: #252531;
+    --card: #19192a;
+    --border: #343446;
     --accent: #6c8bff;
     --accent-soft: rgba(108,139,255,0.18);
+    --accent-glow: rgba(108,139,255,0.55);
     --text: #f3f3fb;
+    --text-strong: #d5d5e0;
+    --text-soft: #9a9aa4;
     --muted: #8a8a95;
    }
   * { box-sizing: border-box; }
@@ -167,10 +170,9 @@ Create /home/pitv/dashboard/index.html
   body {
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", 
-Roboto, sans-serif;
-    background: radial-gradient(circle at top, #11111a 0, #050509 55%, 
-#020206 100%);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, sans-serif;
+    background: radial-gradient(circle at top, #141422 0, #050509 55%, #020206 100%);
     color: var(--text);
     height: 100vh;
     overflow: hidden;
@@ -185,8 +187,7 @@ Roboto, sans-serif;
     justify-content: space-between;
     padding: 14px 22px;
     border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(10,10,18,0.95), 
-rgba(5,5,9,0.9));
+    background: linear-gradient(180deg, rgba(10,10,18,0.95), rgba(5,5,9,0.9));
     box-shadow: 0 6px 16px rgba(0,0,0,0.28);
   }
 
@@ -238,8 +239,7 @@ rgba(5,5,9,0.9));
     padding: 6px 14px;
     font-size: 12px;
     border: 1px solid var(--border);
-    background: radial-gradient(circle at top, var(--accent-soft), 
-rgba(10,10,18,0.9));
+    background: radial-gradient(circle at top, var(--accent-soft), rgba(10,10,18,0.9));
     color: var(--text);
     display: inline-flex;
     align-items: center;
@@ -262,23 +262,21 @@ rgba(10,10,18,0.9));
   main {
     flex: 1;
     display: flex;
-    align-items: flex-start;   /* anchor tiles toward top */
-    justify-content: center;   /* center horizontally */
-    padding: 24px 24px 20px;   /* less bottom padding = less empty space 
-*/
+    align-items: flex-start;    /* anchor tiles toward top */
+    justify-content: center;
+    padding: 24px 24px 20px;
   }
 
   .grid-wrapper {
     width: 100%;
-    max-width: 1400px;         /* slightly wider grid */
+    max-width: 1400px;
     margin: 0 auto;
   }
 
-  /* 3 across, 2 down */
   .tile-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;                 /* more breathing room between columns */
+    gap: 28px;
   }
 
   @media (max-width: 900px) {
@@ -293,24 +291,24 @@ rgba(10,10,18,0.9));
     }
   }
 
+  /* --- TILE --- */
   .tile {
     position: relative;
-    border-radius: 18px;
+    border-radius: 20px;
     border: 1px solid var(--border);
-    background-color: #0b0b12;
-    padding: 18px 18px 16px;
+    background-color: #2d2d46; /* brighter tile */
+    padding: 20px 20px 18px;
     text-align: left;
     cursor: pointer;
     outline: none;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 190px;         /* slightly taller tiles */
+    min-height: 230px;
     overflow: hidden;
-    transition: transform 180ms ease-out;  /* bounce feel */
+    transition: transform 180ms ease-out;
   }
 
-  /* image layer */
   .tile-art {
     position: absolute;
     inset: 0;
@@ -319,21 +317,23 @@ rgba(10,10,18,0.9));
     filter: saturate(1.05);
     transform: scale(1.05);
     z-index: 0;
-    transition: transform 260ms ease-out;  /* smooth zoom */
+    opacity: 0.9;                    /* brighter art */
+    transition: transform 260ms ease-out, opacity 180ms ease-out;
   }
 
-  /* gradient overlay on top of image */
+  /* lighter, softer overlay */
   .tile::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     background-image:
-      radial-gradient(circle at top left, rgba(108,139,255,0.12), 
-rgba(5,5,12,0.75));
+      radial-gradient(circle at top left,
+        rgba(108,139,255,0.05),
+        rgba(10,10,20,0.32)   /* lighter */
+      );
     box-shadow: 0 0 0 0 rgba(108,139,255,0.0);
-    transition: box-shadow 120ms ease-out, transform 120ms ease-out, 
-border-color 120ms ease-out, background-image 120ms ease-out;
+    transition: box-shadow 150ms ease-out, background-image 150ms ease-out;
     z-index: 1;
     pointer-events: none;
   }
@@ -343,12 +343,14 @@ border-color 120ms ease-out, background-image 120ms ease-out;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
+    color: var(--text-strong);
   }
 
   .tile-label {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
+    color: var(--text-strong);  /* main title is light grey */
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-shadow: 0 0 6px rgba(0,0,0,0.55);
@@ -356,35 +358,40 @@ border-color 120ms ease-out, background-image 120ms ease-out;
 
   .tile-sub {
     font-size: 11px;
-    color: var(--muted);
+    color: var(--text-soft);    /* softer grey subtitle */
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-shadow: 0 0 4px rgba(0,0,0,0.6);
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
   }
 
+  /* --- SELECTION GLOW (stronger) --- */
   .tile[data-selected="true"],
   .tile:focus-visible {
     border-color: var(--accent);
-    transform: translateY(-1px);  /* slight lift */
+    transform: translateY(-2px);
   }
 
   .tile[data-selected="true"]::before,
   .tile:focus-visible::before {
     background-image:
-      radial-gradient(circle at top left, rgba(108,139,255,0.45), 
-rgba(5,5,12,0.96));
+      radial-gradient(circle at top left,
+        rgba(108,139,255,0.34),
+        rgba(5,5,12,0.9)
+      );
     box-shadow:
-      0 0 0 2px rgba(108,139,255,0.45),
-      0 8px 22px rgba(108,139,255,0.25);  /* outer glow */
+      0 0 0 2px var(--accent-glow),
+      0 0 30px 14px rgba(108,139,255,0.35),
+      0 18px 50px rgba(108,139,255,0.30);
   }
 
   .tile[data-selected="true"] .tile-art,
   .tile:focus-visible .tile-art {
-    transform: scale(1.08);       /* zoom on selection */
+    transform: scale(1.10);
+    opacity: 1;
   }
 
   .tile:hover::before {
-    box-shadow: 0 0 0 1px rgba(108,139,255,0.3);
+    box-shadow: 0 0 0 1px rgba(108,139,255,0.25);
   }
 
   footer {
@@ -395,8 +402,8 @@ rgba(5,5,12,0.96));
     justify-content: center;
     align-items: center;
     border-top: 1px solid var(--border);
-    background: radial-gradient(circle at bottom, rgba(15,15,24,0.9), 
-rgba(4,4,8,0.95));
+    background: radial-gradient(circle at bottom, rgba(15,15,24,0.9),
+      rgba(4,4,8,0.95));
   }
 
   .footer-keys {
@@ -444,8 +451,8 @@ rgba(4,4,8,0.95));
   <div class="grid-wrapper">
     <div class="tile-grid" id="tile-grid">
       <!-- 1 -->
-      <button class="tile" data-tile data-url="https://www.netflix.com" 
-data-bg="https://images.ctfassets.net/y2ske730sjqp/1aONibCke6niZhgPxuiilC/2c401b05a07288746ddf3bd3943fbc76/BrandAssets_Logos_01-Wordmark.jpg?w=940">
+      <button class="tile" data-tile data-url="https://www.netflix.com"
+        data-bg="https://images.ctfassets.net/y2ske730sjqp/1aONibCke6niZhgPxuiilC/2c401b05a07288746ddf3bd3943fbc76/BrandAssets_Logos_01-Wordmark.jpg?w=940">
         <div class="tile-art"></div>
         <div class="tile-inner">
           <div class="tile-label">Netflix</div>
@@ -454,8 +461,8 @@ data-bg="https://images.ctfassets.net/y2ske730sjqp/1aONibCke6niZhgPxuiilC/2c401b
       </button>
 
       <!-- 2 -->
-      <button class="tile" data-tile data-url="https://www.hulu.com" 
-data-bg="https://s10019.cdn.ncms.io/wp-content/uploads/2025/07/Hulu-on-DIRECTV.png">
+      <button class="tile" data-tile data-url="https://www.hulu.com"
+        data-bg="https://s10019.cdn.ncms.io/wp-content/uploads/2025/07/Hulu-on-DIRECTV.png">
         <div class="tile-art"></div>
         <div class="tile-inner">
           <div class="tile-label">Hulu</div>
@@ -464,8 +471,8 @@ data-bg="https://s10019.cdn.ncms.io/wp-content/uploads/2025/07/Hulu-on-DIRECTV.p
       </button>
 
       <!-- 3 -->
-      <button class="tile" data-tile data-url="https://www.youtube.com" 
-data-bg="https://images.indianexpress.com/2023/05/youtube-logo-featured.jpg">
+      <button class="tile" data-tile data-url="https://www.youtube.com"
+        data-bg="https://images.indianexpress.com/2023/05/youtube-logo-featured.jpg">
         <div class="tile-art"></div>
         <div class="tile-inner">
           <div class="tile-label">YouTube</div>
@@ -474,8 +481,8 @@ data-bg="https://images.indianexpress.com/2023/05/youtube-logo-featured.jpg">
       </button>
 
       <!-- 4 -->
-      <button class="tile" data-tile data-url="https://www.disneyplus.com" 
-data-bg="https://m.media-amazon.com/images/I/719t3jd2NeL.png">
+      <button class="tile" data-tile data-url="https://www.disneyplus.com"
+        data-bg="https://m.media-amazon.com/images/I/719t3jd2NeL.png">
         <div class="tile-art"></div>
         <div class="tile-inner">
           <div class="tile-label">Disney+</div>
@@ -484,19 +491,19 @@ data-bg="https://m.media-amazon.com/images/I/719t3jd2NeL.png">
       </button>
 
       <!-- 5 -->
-      <button class="tile" data-tile data-url="https://hbomax.com" 
-data-bg="https://variety.com/wp-content/uploads/2023/04/Max-Logo-Warner-Bros.-Discovery.png">
+      <button class="tile" data-tile data-url="https://hbomax.com"
+        data-bg="https://variety.com/wp-content/uploads/2023/04/Max-Logo-Warner-Bros.-Discovery.png">
         <div class="tile-art"></div>
         <div class="tile-inner">
-          <div class="tile-label">HBO MAX</div>
+          <div class="tile-label">HBO Max</div>
           <div class="tile-sub">HBO</div>
         </div>
       </button>
 
       <!-- 6 -->
-      <button class="tile" data-tile 
-data-url="https://browserleaks.com/geo" 
-data-bg="https://www.shutterstock.com/shutterstock/videos/3465164651/thumb/1.jpg?ip=x480">
+      <button class="tile" data-tile
+        data-url="https://browserleaks.com/geo"
+        data-bg="https://www.shutterstock.com/shutterstock/videos/3465164651/thumb/1.jpg?ip=x480">
         <div class="tile-art"></div>
         <div class="tile-inner">
           <div class="tile-label">Geo Test</div>
@@ -530,11 +537,10 @@ data-bg="https://www.shutterstock.com/shutterstock/videos/3465164651/thumb/1.jpg
   updateClock();
   setInterval(updateClock, 30000);
 
-  var tiles = 
-Array.prototype.slice.call(document.querySelectorAll('[data-tile]'));
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('[data-tile]'));
   var cols = 3; // keep in sync with grid-template-columns repeat(3, ...)
 
-  // Apply background images with gradient overlay already defined in CSS
+  // Apply background images
   tiles.forEach(function(tile) {
     var art = tile.querySelector('.tile-art');
     var bg = tile.getAttribute('data-bg');
@@ -586,8 +592,7 @@ Array.prototype.slice.call(document.querySelectorAll('[data-tile]'));
     switch (ev.key) {
       case 'ArrowRight':
         ev.preventDefault();
-        if ((currentIndex + 1) % cols !== 0 && currentIndex + 1 < 
-tiles.length) {
+        if ((currentIndex + 1) % cols !== 0 && currentIndex + 1 < tiles.length) {
           selectTile(currentIndex + 1);
         }
         break;
@@ -638,6 +643,7 @@ tiles.length) {
 </script>
 </body>
 </html>
+
 ```
 
 
