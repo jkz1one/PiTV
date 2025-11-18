@@ -142,6 +142,8 @@ EOF
 
 Expected behavior → auto-pops on text fields, hides afterward, docked bottom, handle visible when idle.
 
+**I also configured some extra settings with onboard using the GUI before finalizing.** *(I recommend turning off tabet mode if still on and changing the keyboard layout and theme to your liking)*
+
 4️⃣ Dashboard (Fullscreen HTML)
 
 Create /home/pitv/dashboard/index.html 
