@@ -1,6 +1,6 @@
 # 📺 **PiTV — Raspberry Pi TV Dashboard**
 
-<img width="3352" height="1804" alt="image" src="https://github.com/user-attachments/assets/82f086b3-6324-4392-8f1f-0fb81bc671c5" />
+<img width="3356" height="1808" alt="image" src="https://github.com/user-attachments/assets/5088efb0-ff9a-46e9-b54b-babc43406297" />
 
 **A minimal, Wayland-based kiosk system for Raspberry Pi OS.**
 
