@@ -224,6 +224,10 @@ EOF
 
 ---
 
+**I also configured some extra settings with onboard using the GUI before finalizing.** *(I recommend turning off tabet mode if still on and changing the keyboard layout and theme to your liking)*
+
+---
+
 # 4. Dashboard (Fullscreen HTML)
 
 Place your dashboard:
