@@ -9,34 +9,26 @@ This repo contains everything required to **rebuild PiTV from scratch**.
 
 ---
 
-# 🚀 Features
+🚀 Features
 
-### 🔒 Static Geolocation
+PiTV delivers a clean, reliable, living-room-ready kiosk experience on Raspberry Pi OS.
+It boots straight into a fullscreen dashboard, launches Firefox ESR in a frameless profile, supports a modern on-screen keyboard, and provides consistent location handling for apps that rely on geolocation.
 
-* GeoClue configured with a locked `/etc/geolocation`
-* XDG portals enabled for Firefox location requests
-* Works reliably on Wayland (rpd-labwc)
+Key Capabilities
 
-### 🖥️ Fullscreen Kiosk Dashboard
+Boots directly into a fullscreen, remote-friendly dashboard
 
-* Firefox ESR auto-launches via systemd user service
-* Custom profile hides all chrome (tabs, URL bar)
-* Loads dashboard HTML from local filesystem
-* No `--kiosk` flags → preserves Onboard keyboard layering
+Frameless Firefox ESR profile optimized for TV display
 
-### ⌨️ Touch-Friendly Onboard Keyboard
+On-screen keyboard that auto-shows on text fields and stays above apps
 
-* Auto-pops on text inputs
-* Docked bottom, force-to-top
-* Works under Wayland
-* Autostarts at login
+Stable static-location behavior via GeoClue + XDG portals
 
-### 🧭 Wayland Native
+Fully Wayland-native (rpd-labwc), no Chromium, no fragile kiosk flags
 
-* Runs on Raspberry Pi OS Bookworm’s **rpd-labwc** session
-* No LXDE/Openbox dependencies
-* No Chromium
-* 
+Reproducible setup using isolated config files and a systemd user service
+
+
 ---
 
 # 🛠️ Requirements
