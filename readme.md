@@ -26,6 +26,366 @@ Key Capabilities:
 
 # 📦 Installation Summary
 
+Here you go — a **clean, professional, repo-ready README** for your **PiTV** GitHub project.
+It explains *why* each subsystem exists and *how* the whole kiosk works.
+Everything matches your **Current Verified Build (Wayland / rpd-labwc)** exactly.
+
+---
+
+# 🧩 PiTV
+
+### Raspberry Pi TV Dashboard • Static Geolocation • Touch Keyboard • Firefox ESR Kiosk
+
+**Verified Build:** Raspberry Pi OS Bookworm • Wayland (`rpd-labwc`) • Firefox ESR
+
+PiTV is a reproducible, minimal, and completely self-contained home-media dashboard for Raspberry Pi.
+It uses **Firefox ESR**, **GeoClue static geolocation**, and an **auto-pop Onboard keyboard** to provide a smooth TV-friendly experience for streaming sites like Hulu, Netflix, and Max.
+
+This README documents the full setup, the *why*, and the system architecture.
+
+---
+
+## ⭐ Features
+
+* **Static geolocation override** via **GeoClue → XDG portals → Firefox ESR**
+  Required because modern streaming services verify *location via browser APIs*, not IP only.
+
+* **Wayland (rpd-labwc)** session for cleaner rendering and working Onboard keyboard overlays.
+
+* **Onboard touch keyboard** that pops up automatically on any text input and hides afterwards.
+
+* **Fullscreen HTML dashboard** with arrow-key navigation and a Reload button.
+
+* **Frameless Firefox window** (no tabs, bars, or chrome) without using `--kiosk`
+  → avoids breaking Onboard’s floating layer on Wayland.
+
+* **Systemd user service** boots Firefox into the dashboard automatically on login.
+
+* **No Chromium** (Chrome/Chromium cannot reliably use GeoClue static locations on Raspberry Pi OS).
+
+---
+
+# 0. Core Architecture
+
+**PiTV runs on:**
+
+* **Raspberry Pi OS (Bookworm)**
+* **Wayland session:** `wayland / rpd-labwc`
+* **Firefox ESR** (required for proper GeoClue integration via portals)
+* **GeoClue static location file** for deterministic geolocation
+
+This combination ensures:
+
+* Streaming services see *NYC* (or whatever you choose) as your location
+* Keyboard reliably overlays the browser window
+* Dashboard loads instantly on boot
+* System is simple and fully reproducible
+
+---
+
+# 1. System Setup
+
+### Flash Raspberry Pi OS
+
+Use Raspberry Pi Imager → **Raspberry Pi OS (64-bit) with desktop**.
+Set hostname, user (`pitv`), Wi-Fi, and SSH if needed.
+
+Boot and confirm you are in the correct session:
+
+```bash
+echo "$XDG_SESSION_TYPE / $DESKTOP_SESSION"
+# expect: wayland / rpd-labwc
+```
+
+Fix audio/Wi-Fi using:
+
+```bash
+sudo raspi-config
+```
+
+### Install required packages
+
+```bash
+sudo apt update
+sudo apt install -y \
+  firefox-esr geoclue-2.0 \
+  xdg-desktop-portal xdg-desktop-portal-gtk \
+  onboard at-spi2-core gsettings-desktop-schemas dconf-cli \
+  x11-utils dbus-x11
+```
+
+---
+
+# 2. Static Location (GeoClue + Portal Chain)
+
+### ❓ Why GeoClue?
+
+Modern streaming services (Hulu, Netflix, Max, Disney+) use:
+
+* **HTML5 Geolocation API**
+* **XDG Portal → GeoClue2 backend**
+
+This bypasses the IP address entirely.
+If the browser can’t provide a valid location, **Hulu refuses to play** or forces error pages.
+
+We use **GeoClue’s static source** so every app sees the same geolocation — stable, reproducible, and spoof-proof.
+
+---
+
+### Create `/etc/geolocation` (lat, lon, altitude, accuracy)
+
+```bash
+sudo tee /etc/geolocation >/dev/null <<'EOF'
+40.7580
+-73.9855
+10
+1000
+EOF
+
+sudo chown geoclue /etc/geolocation
+sudo chmod 600 /etc/geolocation
+```
+
+---
+
+### Configure GeoClue to *only* use the static source
+
+```bash
+UIDNUM=$(id -u)
+sudo install -d /etc/geoclue/conf.d
+```
+
+```bash
+sudo tee /etc/geoclue/conf.d/90-pitv-static.conf >/dev/null <<CONF
+[static-source]
+enable=true
+
+[wifi]
+enable=false
+[modem-gps]
+enable=false
+[3g]
+enable=false
+[cdma]
+enable=false
+[compass]
+enable=false
+
+[firefox]
+allowed=true
+system=false
+users=$UIDNUM
+
+[firefox-esr]
+allowed=true
+system=false
+users=$UIDNUM
+
+[org.mozilla.firefox]
+allowed=true
+system=false
+users=$UIDNUM
+CONF
+```
+
+Restart:
+
+```bash
+sudo systemctl restart geoclue
+```
+
+---
+
+### Enable location service + restart portals
+
+```bash
+gsettings set org.gnome.system.location enabled true
+systemctl --user daemon-reload
+systemctl --user restart xdg-desktop-portal.service xdg-desktop-portal-gtk.service
+```
+
+---
+
+### Verify
+
+```bash
+GTK_USE_PORTAL=1 MOZ_ENABLE_WAYLAND=1 firefox-esr https://browserleaks.com/geo
+```
+
+You will get a permission popup → Allow → Should show your static NYC coordinates.
+
+---
+
+# 3. Onboard Touch Keyboard (Wayland-Verified)
+
+### Why Onboard?
+
+* Works on Wayland
+* Pops up on text inputs
+* Proper floating overlay over Firefox
+* No weird “touch mode” needed
+
+---
+
+### Apply all sane default settings
+
+```bash
+gset() { s=$1; k=$2; v=$3; gsettings writable "$s" "$k" >/dev/null 2>&1 && gsettings set "$s" "$k" "$v"; }
+```
+
+Then apply the full config:
+
+```bash
+gset org.onboard.auto-show enabled true
+gset org.onboard.auto-show hide-on-key-press true
+gset org.onboard.auto-show hide-on-key-press-pause 0.2
+gset org.onboard.auto-show reposition-method-docked "'prevent-occlusion'"
+gset org.onboard.auto-show reposition-method-floating "'prevent-occlusion'"
+
+gset org.onboard.window docking-enabled true
+gset org.onboard.window docking-edge "'bottom'"
+gset org.onboard.window docking-shrink-workarea false
+gset org.onboard.window force-to-top true
+
+gset org.onboard.window.landscape dock-expand true
+gset org.onboard.window.landscape dock-width 900
+gset org.onboard.window.landscape dock-height 180
+gset org.onboard.window.landscape x 20
+gset org.onboard.window.landscape y 860
+
+gset org.onboard.window.portrait dock-expand true
+gset org.onboard.window.portrait dock-width 650
+gset org.onboard.window.portrait dock-height 200
+gset org.onboard.window.portrait x 20
+gset org.onboard.window.portrait y 860
+
+gset org.onboard start-minimized true
+gset org.onboard show-status-icon true
+```
+
+---
+
+### Autostart Onboard
+
+```bash
+mkdir -p ~/.config/autostart
+cat > ~/.config/autostart/onboard.desktop <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=Onboard
+Exec=onboard
+X-GNOME-Autostart-enabled=true
+EOF
+```
+
+---
+
+# 4. Dashboard (Fullscreen HTML)
+
+Place your dashboard:
+
+```
+/home/pitv/dashboard/index.html
+```
+
+Dashboard requirements:
+
+* Dark minimal UI
+* Arrow-key navigation
+* Reload button
+* Works with touch and remote inputs
+* No scrollbars or overscroll
+* Loads instantly (static file → no server)
+
+---
+
+# 5. Firefox ESR (Frameless)
+
+### Why no `--kiosk`?
+
+Firefox `--kiosk` breaks Onboard overlays on Wayland; windows become immovable and layered incorrectly.
+
+Instead we use a **custom profile** with **userChrome.css** to hide all chrome.
+
+---
+
+### Create the Firefox profile
+
+```bash
+mkdir -p ~/.mozilla/firefox/kiosk-profile/chrome
+```
+
+**Hide chrome:**
+
+```bash
+cat > ~/.mozilla/firefox/kiosk-profile/chrome/userChrome.css <<'EOF'
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar,
+#toolbar-menubar { visibility: collapse !important; }
+#sidebar-header { display: none !important; }
+EOF
+```
+
+**Profile preferences:**
+
+```bash
+cat > ~/.mozilla/firefox/kiosk-profile/prefs.js <<'EOF'
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+user_pref("browser.shell.checkDefaultBrowser", false);
+user_pref("browser.tabs.inTitlebar", 0);
+user_pref("browser.sessionstore.resume_session_once", false);
+user_pref("browser.startup.homepage", "file:///home/pitv/dashboard/index.html");
+user_pref("browser.startup.page", 1);
+EOF
+```
+
+---
+
+# 6. Autostart Firefox via systemd (User-Level)
+
+### Why systemd instead of an autostart .desktop?
+
+* More reliable on Wayland
+* Automatically respawns on crash
+* Delays until the graphical session is fully ready
+* Clean, idempotent, reproducible
+
+---
+
+```bash
+mkdir -p ~/.config/systemd/user
+```
+
+Create the unit:
+
+```bash
+cat > ~/.config/systemd/user/pitv-kiosk.service <<'UNIT'
+[Unit]
+Description=PiTV Firefox Dashboard
+After=graphical-session.target
+
+[Service]
+Type=simple
+Environment=MOZ_ENABLE_WAYLAND=1
+Environment=GTK_USE_PORTAL=1
+ExecStart=/usr/bin/firefox-esr -profile %h/.mozilla/firefox/kiosk-profile --new-window file:///home/pitv/dashboard/index.html
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
+UNIT
+```
+
+Enable:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now pitv-kiosk.service
+```
+
+**FULL BUILD INSTRUCTIONS IN *SETUP.MD***
 
 ---
 
